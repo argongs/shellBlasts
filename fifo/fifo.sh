@@ -26,13 +26,16 @@
 # Returns : Nothing				#
 # --------------------------------------------- #
 mecho ()
-{
-	if [ $1 == "d" ]; then
-		echo "[.....] $2" #For displaying messages which are a continuation of some info or error
-	elif [ $1 == "e" ]; then
-		echo "[error] $2" #For error messages
-	elif [ $1 == "i" ]; then
-		echo "[info.] $2" #For simple info messages
+{	
+	m_type=$1
+	message=$2	
+
+	if [ $m_type == "d" ]; then
+		echo "[.....] $message" #For displaying messages which are continuation of some info or error
+	elif [ $m_type == "e" ]; then
+		echo "[error] $message" #For error messages
+	elif [ $m_type == "i" ]; then
+		echo "[info.] $message" #For simple info messages
 	else
 		mecho "e" "Incorrect option supplied"
 	fi
@@ -49,48 +52,24 @@ display_usage ()
 	mecho "i" "Usage:"
 	mecho "d" "bash fifo.sh [list of commands seperated by space] #Operator mode"
 	mecho "d" "bash fifo.sh -u #Help mode"
+	echo ""
 	mecho "i" "Note:"
 	mecho "d" "1. Help mode will be activated iff the first input to this program is '-u'. If it's supplied after giving the list of commands to schedule, then it will be treated as erroraneous input."
         mecho "d" "2. Help mode is meant to display only the usage of this program. Hence if the option of '-u' is discovered, then regardless of any other input only the usage information will be displayed."
 	mecho "d" "3. If there're >1 instances of the same command being executed simultaneously then only each one of them(which could be anyone out of all of those instances) will be considered by this program for scheduling."
 	mecho "d" "4. If a command does not exist in the list of currently executing processes, then this program will silently ignore that command and it will move on to the remaining commands."
 	mecho "d" "5. Use this program to schedule only those commands whose instances can be controlled by you (either via GUI or CLI). If there exists a command which provides GUI/CLI for only one of it's many instances then it's better to avoid them because it may so happen that this program would schedule those instances first which don't provide an interface to interact with, thus making the interactable instance unavailable. "
+	echo ""
 	mecho "i" "Examples: "
 	mecho "d" "$> bash fifo.sh gedit vim chromium-browser #For scheduling the commands gedit, vim and chromium-browser"
 	mecho "d" "$> bash fifo.sh -u #For displaying usage"
-}
-
-
-# ---------------------------------------------	#
-# display_info()				#
-# Append '[error]' or '[info.]' to the input	#
-# message in order to reflect the type of the  	#
-# displayed message (i.e. whether it's just a	# 
-# simple info or an error message).		#
-# Parameters : $1 $2				#
-# 	$1	represents the message type	#
-# 	   	"i" for info and "e" for error	#
-#	$2	represents the message		#
-# Returns : Nothing				#
-# --------------------------------------------- #
-display_info ()
-{
-	m_type=$1
-	message=$2
-	if [ $m_type == "e" ]; then
-		echo "[error] $message"
-	elif [ $m_type == "i" ]; then
-		echo "[info] $message"
-	else
-		display_info "e" "Incorrect option supplied"
-	fi
 }
 
 #End of function definition region
 
 #Check if user has given any input
 if [ $# -eq 0 ]; then
-	display_info "e" "No commands provided for scheduling"
+	mecho "e" "No commands provided for scheduling"
 	exit 1
 fi
 
