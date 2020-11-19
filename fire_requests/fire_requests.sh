@@ -4,7 +4,7 @@
 # 	fire_requests.sh		#
 #					#
 # This shell script will fire		#
-# large no. of hits to the		# 
+# requested no. of hits to the		# 
 # requested website by making use	# 
 # of 'GNU wget' tool.	     		#
 #					#
